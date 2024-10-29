@@ -4,6 +4,12 @@ export default function useForm(initial = {}) {
   // create a state object for our inputs
   const [inputs, setInputs] = useState(initial);
 
+  // {
+  //   name: 'wes',
+  //   description: 'nice shoes',
+  //   price: 1000
+  // }
+
   function handleChange(e) {
     let { value, name, type } = e.target;
     if (type === 'number') {
@@ -29,6 +35,7 @@ export default function useForm(initial = {}) {
     );
     setInputs(blankState);
   }
+
   // return the things we want to surface from this custom hook
   return {
     inputs,
