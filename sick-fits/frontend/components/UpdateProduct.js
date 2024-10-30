@@ -29,8 +29,6 @@ export default function UpdateProduct({ id }) {
   const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
     variables: { id },
   });
-
-  console.log(data);
   // 2. we need to get the mutation to update the product
   const [
     updateProduct,
