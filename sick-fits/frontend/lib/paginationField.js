@@ -32,7 +32,7 @@ export default function paginationField() {
       return false; // fallback to network
     },
     merge(existing, incoming, { args }) {
-      // how are we going to put the items back into the cache?
+      // how are we going to put the items to the cache?
       const { skip, first } = args;
       console.log(`Merging items from the network ${incoming.length}`);
       const merged = existing ? existing.slice(0) : [];
