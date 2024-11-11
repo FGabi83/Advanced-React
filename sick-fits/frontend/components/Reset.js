@@ -4,21 +4,31 @@ import Form from './styles/Form';
 import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
 
-const REQUEST_RESET_MUTATION = gql`
-  mutation REQUEST_RESET_MUTATION($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $password: String!
+    $token: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      password: $password
+      token: $token
+    ) {
       code
       message
     }
   }
 `;
 
-export default function RequestReset() {
+export default function Reset({ token }) {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
+    password: '',
+    token,
   });
-  const [requestReset, { data, loading, error }] = useMutation(
-    REQUEST_RESET_MUTATION,
+  const [resetPassword, { data, loading, error }] = useMutation(
+    RESET_MUTATION,
     {
       variables: inputs,
       // refetchQueries: [{ query: CURRENT_USER_QUERY }],
@@ -26,19 +36,22 @@ export default function RequestReset() {
   );
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await requestReset();
+    const res = await resetPassword();
     console.log(res);
-    console.log({ data, loading, error });
+    console.log({ data, loading });
     resetForm();
     // Send the email and password to the graphqlAPI
   }
+  const successfulError = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : undefined;
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Request a Password Reset</h2>
-      <DisplayError error={error} />
-      {data?.sendUserPasswordResetLink === null && (
-        <p>Success! Check your email for a link!</p>
+      <h2>Reset your Password</h2>
+      <DisplayError error={error || successfulError} />
+      {data?.redeemUserPasswordResetToken === null && (
+        <p>Success! Your password has changed!</p>
       )}
       <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="email">
@@ -50,6 +63,17 @@ export default function RequestReset() {
             placeholder="Your Email Address"
             autoComplete="email"
             value={inputs.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={inputs.password}
             onChange={handleChange}
           />
         </label>
