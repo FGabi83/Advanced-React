@@ -5,11 +5,9 @@ export default function paginationField() {
     keyArgs: false, // tells Apollo we will take care of everything
     read(existing = [], { args, cache }) {
       // is there anything in the cache?
-      console.log({ existing, args, cache });
       const { skip, first } = args;
       /* read the number of items on the page from the cache */
       const data = cache.readQuery({ query: PAGINATION_QUERY });
-      console.log(data);
       const count = data?._allProductsMeta?.count;
       const page = skip / first + 1;
       const pages = Math.ceil(count / first); // first equals to perPage
