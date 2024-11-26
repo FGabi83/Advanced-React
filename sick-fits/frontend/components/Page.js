@@ -63,8 +63,5 @@ export default function Page({ children }) {
 }
 
 Page.propTypes = {
-  children: PropTypes.oneOf([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
+  children: PropTypes.any,
 };
