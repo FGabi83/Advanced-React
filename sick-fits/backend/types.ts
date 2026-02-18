@@ -5,6 +5,7 @@ import { KeystoneGraphQLAPI, KeystoneListsAPI } from '@keystone-next/types';
 // import type { KeystoneListsTypeInfo } from './.keystone/schema-types';
 
 import type { Permission } from './schemas/fields';
+
 export type { Permission } from './schemas/fields';
 
 export type Session = {
@@ -26,7 +27,7 @@ export type GraphqlAPI = KeystoneGraphQLAPI<any /* KeystoneListsTypeInfo */>;
 
 export type AccessArgs = {
   session?: Session;
-  item?: any;
+  itemId?: string;
 };
 
 export type AccessControl = {
